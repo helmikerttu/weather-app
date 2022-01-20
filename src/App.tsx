@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import * as CITIES from './cities.json';
 import { Box } from './styles';
 import { City } from './types';
+import CityWeather from './components/CityWeather';
 
 const Container = styled.div`
   background-color: #f8f9fa;
@@ -30,6 +31,14 @@ const Select = styled.select`
   padding: 6px 0;
   font-size: 13px;
   color: #262626;
+`;
+
+const WeatherContainer = styled.div`
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
 `;
 
 // Map openweathermap.org API's weather data to a Weather object
@@ -95,6 +104,13 @@ export default function App() {
             )}
           </Select>
         </Box>
+        
+        <WeatherContainer>
+          {selectedCity !== undefined
+            ? <CityWeather city={selectedCity} />
+            : cities.map(city => <CityWeather key={city.id} city={city} />)
+          }
+        </WeatherContainer>
       </Container>
     </div>
   );
