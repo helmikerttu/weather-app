@@ -1,9 +1,19 @@
 import { useState } from 'react';
 import useAsyncEffect from 'use-async-effect';
 import axios from 'axios';
+import styled from 'styled-components';
 
 import * as CITIES from './cities.json';
 import { City } from './types';
+
+const Header = styled.div`
+  font-family: 'Arial';
+  background-color: #ffffff;
+  padding: 16px;
+  font-size: 23px;
+  color: #262626;
+  text-align: center;
+`;
 
 // Map openweathermap.org API's weather data to a Weather object
 const mapToWeather = (data: any) => ({
@@ -46,11 +56,11 @@ export default function App() {
   }, [setCities]);
 
   if (cities === undefined) {
-    return <div>Ladataan kaupunkeja...</div>;
+    return <Header>Ladataan kaupunkeja...</Header>;
   }
   return (
     <div>
-      Säätutka
+      <Header>Säätutka</Header>
     </div>
   );
 }
