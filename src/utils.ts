@@ -1,3 +1,9 @@
+export const dateTimeToTime = (datetime: string) => {
+  const parts = datetime.split(' ');
+  const time = parts[1].split(':');
+  return `${time[0]}:${time[1]}`;
+};
+
 export const dateTimeToDate = (datetime: string) => {
   const dateParts = datetime.split(' ')[0].split('-');
   const monthIndex = parseInt(dateParts[1]);
