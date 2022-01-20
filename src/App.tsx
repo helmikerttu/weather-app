@@ -1,10 +1,19 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import useAsyncEffect from 'use-async-effect';
 import axios from 'axios';
 import styled from 'styled-components';
 
 import * as CITIES from './cities.json';
+import { Box } from './styles';
 import { City } from './types';
+
+const Container = styled.div`
+  background-color: #f8f9fa;
+  padding: 28px;
+  font-family: 'Arial';
+  margin: auto;
+  max-width: fit-content;
+`;
 
 const Header = styled.div`
   font-family: 'Arial';
@@ -13,6 +22,14 @@ const Header = styled.div`
   font-size: 23px;
   color: #262626;
   text-align: center;
+`;
+
+const Select = styled.select`
+  border: none; 
+  width: 100%;
+  padding: 6px 0;
+  font-size: 13px;
+  color: #262626;
 `;
 
 // Map openweathermap.org API's weather data to a Weather object
@@ -28,6 +45,7 @@ const mapToWeather = (data: any) => ({
 
 export default function App() {
   const [cities, setCities] = useState<City[]>();
+  const [selectedCity, setSelectedCity] = useState<City>();
 
   // Fetch forecasts for all cities
   useAsyncEffect(async isActive => {
@@ -55,12 +73,29 @@ export default function App() {
 
   }, [setCities]);
 
+  const onSelectCity = useCallback((id: number) => {
+    setSelectedCity(cities?.find(city => city.id === id));
+  }, [cities, setSelectedCity]);
+
   if (cities === undefined) {
     return <Header>Ladataan kaupunkeja...</Header>;
   }
   return (
     <div>
       <Header>Säätutka</Header>
+      <Container>
+        <Box>
+          <Select
+            value={selectedCity?.id ?? 0}
+            onChange={event => onSelectCity(parseInt(event.target.value))}
+          >
+            <option value={0}>Kaikki kaupungit</option>
+            {cities.map(city => 
+              <option key={city.id} value={city.id}>{city.name}</option>
+            )}
+          </Select>
+        </Box>
+      </Container>
     </div>
   );
 }
