@@ -1,7 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import axios from 'axios';
+
+import App from './App';
+
+
+axios.defaults.baseURL = 'https://api.openweathermap.org/data/2.5';
+
+axios.interceptors.request.use(config => {
+  if (config.params === undefined) {
+    config.params = {};
+  }
+  config.params.appid = process.env.REACT_APP_API_KEY;
+  return config;
+});
 
 ReactDOM.render(
   <React.StrictMode>
